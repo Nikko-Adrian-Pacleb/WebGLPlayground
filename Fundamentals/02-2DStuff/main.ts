@@ -24,17 +24,17 @@ void main() {
 `
 
 const fragmentShaderSource = `#version 300 es
-
 // fragment shaders don't have a default precision so we need
 // to pick one. highp is a good default. It means "high precision"
 precision highp float;
+
+uniform vec4 u_color;
 
 // we need to declare an output for the fragment shader
 out vec4 outColor;
 
 void main() {
-  // Just set the output to a constant redish-purple
-  outColor = vec4(1, 0, 0.5, 1);
+    outColor = u_color;
 }
 `;
 
@@ -84,7 +84,7 @@ function main() {
     const positionAttributeLocation = gl.getAttribLocation(program, 'a_position')
     // Look up uniform locations
     const resolutionUniformLocation = gl.getUniformLocation(program, "u_resolution");
-    
+    const colorLocation = gl.getUniformLocation(program, "u_color");
     // Create a buffer and put a single pixel space rectangle in
     // it (2 triangles)
     // Create a buffer and put three 2d clip space points in it
@@ -141,11 +141,38 @@ function main() {
     // pixels to clipspace in the shader
     gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
     
-    // draw
-    const primitiveType = gl.TRIANGLES
-    const offDraw = 0
-    const count = 6
-    gl.drawArrays(primitiveType, offDraw, count)
+    // Draw 50 random rectangles in random colors
+    for (let i = 0; i < 50; i++) {
+        // Put a rectangle in the position buffer
+        setRectangle(gl, randomInt(300), randomInt(300), randomInt(300), randomInt(300))
+
+        // Set a random color.
+        gl.uniform4f(colorLocation, Math.random(), Math.random(), Math.random(), 1)
+
+        // Draw the rectangle
+        const primitiveType = gl.TRIANGLES
+        const offDraw = 0
+        const count = 6
+        gl.drawArrays(primitiveType, offDraw, count)
+    }
 }
+function randomInt(range) {
+    return Math.floor(Math.random() * range)
+}
+function setRectangle(gl, x, y, width, height) {
+const x1 = x
+const x2 = x + width
+const y1 = y
+const y2 = y + height
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    x1, y1,
+    x2, y1,
+    x1, y2,
+    x1, y2,
+    x2, y1,
+    x2, y2,
+    ]), gl.STATIC_DRAW)
+}
+
 
 main();
