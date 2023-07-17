@@ -18,6 +18,11 @@ const fragmentShaderSource = `#version 300 es
         outColor = vec4(1, 0, 0.5, 1);
     }
 `
+let clockwise = true;
+let DirectionChangeButton = document.getElementById("DirectionChangeButton").onclick = () => {
+    clockwise = !clockwise
+}
+
 function main() {
     const canvas = document.getElementById("glCanvas")
     const gl = canvas.getContext("webgl2");
@@ -26,7 +31,7 @@ function main() {
     
     gl.useProgram(program)
     
-    let theta = 0.6
+    let theta = 0.0;
     const thetaLocation = gl.getUniformLocation(program, "theta")
     gl.uniform1f(thetaLocation, theta)
     const rectanglePoints = [
@@ -50,10 +55,11 @@ function main() {
     gl.viewport(0, 0, canvas.width, canvas.height)
     function render() {
         setTimeout(() => {
+            theta += clockwise ? 0.1 : -0.1
+
             requestAnimationFrame(render)
             gl.clearColor(0.5, 0.5, 0.5, 1.0)
             gl.clear(gl.COLOR_BUFFER_BIT)
-            theta += 0.1
             gl.uniform1f(thetaLocation, theta)
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
         }, 100)
@@ -61,3 +67,4 @@ function main() {
     render()
 }
 main()
+
