@@ -23,14 +23,30 @@ function main() {
     
     gl.useProgram(program)
     
+    // Triangle Edge Points
     const edgePoints = [
         [0.0, 0.8],
         [-0.8, -0.8],
         [0.8, -0.8]
     ]
-    let allPoints = []
+    let allPoints = [] // Collection of all points to be drawn
     const recursionCount = 9;
 
+    /**
+     * 
+     * @param {[x, y]} point1 
+     * @param {[x, y]} point2 
+     * @param {[x, y]} point3 
+     * @param {[x, y]} recursionCount 
+     * @returns 
+     * 
+     * @description
+     * if recursionCount is 0, then the last triangle is drawn
+     * the points that are passed in are the points of the triangle
+     * 
+     * if the recursionCount is not 0, then the triangle is divided into 3 triangles
+     * to get the points of the new triangles, the midpoint of the edges of the triangle are calculated
+     */
     function DivideTriangle(point1, point2, point3, recursionCount) {
         if(recursionCount === 0) {
             // Last Triangle
