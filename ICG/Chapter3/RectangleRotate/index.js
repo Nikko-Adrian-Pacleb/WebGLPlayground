@@ -2,6 +2,7 @@ const vertexShaderSource = `#version 300 es
     in vec4 position;
     uniform float theta;
     void main() {
+        // Change the position of the point based on theta
         gl_Position.x = -sin(theta) * position.x + cos(theta) * position.y;
         gl_Position.y = sin(theta) * position.y + cos(theta) * position.x;
         gl_Position.z = 0.0;
@@ -18,7 +19,8 @@ const fragmentShaderSource = `#version 300 es
         outColor = vec4(1, 0, 0.5, 1);
     }
 `
-let clockwise = true;
+// Variable to determine the direction of rotation
+let clockwise = true; 
 let DirectionChangeButton = document.getElementById("DirectionChangeButton").onclick = () => {
     clockwise = !clockwise
 }
@@ -31,7 +33,7 @@ function main() {
     
     gl.useProgram(program)
     
-    let theta = 0.0;
+    let theta = 0.0; 
     const thetaLocation = gl.getUniformLocation(program, "theta")
     gl.uniform1f(thetaLocation, theta)
     const rectanglePoints = [
@@ -55,6 +57,7 @@ function main() {
     gl.viewport(0, 0, canvas.width, canvas.height)
     function render() {
         setTimeout(() => {
+            // Every Render, change the theta value based on the direction of rotation
             theta += clockwise ? 0.1 : -0.1
 
             requestAnimationFrame(render)
