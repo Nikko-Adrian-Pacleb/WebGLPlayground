@@ -2,8 +2,11 @@
 
 const vertexShaderSource = `#version 300 es
     in vec4 a_position;
+    in vec3 vertColor;
+    out vec3 fragColor;
 
     void main() {
+        fragColor = vertColor;
         gl_Position = a_position;
     }
 `
@@ -11,10 +14,11 @@ const vertexShaderSource = `#version 300 es
 const fragmentShaderSource = `#version 300 es
     precision highp float;
 
+    in vec3 fragColor;
     out vec4 outColor;
 
     void main() {
-        outColor = vec4(1, 0, 0.5, 1);
+        outColor = vec4(fragColor, 1);
     }
 `
 
@@ -72,14 +76,15 @@ function main() {
 
     // Get Shader Variable Locations
     const positionAttributeLocation = gl.getAttribLocation(program, "a_position")
+    const vertColorAttributeLocation = gl.getAttribLocation(program, "vertColor")
 
     // Create Buffer
     const positionBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
     const positions = [
-        -1, 0,
-        0, 1,
-        1, 1,
+        -1, 0,      1.0, 0.0, 0.0,
+        0, 1,       0.0, 1.0, 0.0,
+        1, 1,       0.0, 0.0, 1.0,
     ]
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW)
 
@@ -87,12 +92,14 @@ function main() {
     const vao = gl.createVertexArray()
     gl.bindVertexArray(vao)
     gl.enableVertexAttribArray(positionAttributeLocation) // Learn why this has to be here
+    gl.enableVertexAttribArray(vertColorAttributeLocation) // Learn why this has to be here
     const size = 2
     const type = gl.FLOAT
     const normalize = false
-    const stride = 0
+    const stride = 5 * Float32Array.BYTES_PER_ELEMENT
     const offset = 0
-    gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset)
+    gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, 0 * Float32Array.BYTES_PER_ELEMENT)
+    gl.vertexAttribPointer(vertColorAttributeLocation, 3, type, normalize, stride, 2 * Float32Array.BYTES_PER_ELEMENT)
     
     // Clear Canvas
     gl.clearColor(0, 0, 0, 0)
