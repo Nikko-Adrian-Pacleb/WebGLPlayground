@@ -19,11 +19,25 @@ const fragmentShaderSource = `#version 300 es
         outColor = vec4(1, 0, 0.5, 1);
     }
 `
-// Variable to determine the direction of rotation
-let clockwise = true; 
-let DirectionChangeButton = document.getElementById("DirectionChangeButton").onclick = () => {
+let delay = 100;
+let clockwise = true; // Variable to determine the direction of rotation
+const DirectionChangeButton = document.getElementById("DirectionChangeButton").onclick = () => {
     clockwise = !clockwise
 }
+const AppMenuSelect = document.getElementById("AppMenuSelect")
+AppMenuSelect.addEventListener("click", () => {
+    switch(AppMenuSelect.selectedIndex) {
+        case 0:
+            clockwise = !clockwise
+            break;
+        case 1:
+            delay /= 2
+            break;
+        case 2:
+            delay *= 2
+            break;
+    }
+})
 
 function main() {
     const canvas = document.getElementById("glCanvas")
@@ -65,7 +79,7 @@ function main() {
             gl.clear(gl.COLOR_BUFFER_BIT)
             gl.uniform1f(thetaLocation, theta)
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
-        }, 100)
+        }, delay)
     }
     render()
 }

@@ -7,7 +7,14 @@
     
 </head>
 <body>
-    <button id="DirectionChangeButton">Change Rotation Direction</button>
+    <select id="AppMenuSelect" size="3">
+        <option value="0">Toggle Rotation Direction</option>
+        <option value="1">Spin Faster</option>
+        <option value="2">Spin Slower</option>
+    </select>
+    <br>
+    <button id="DirectionChangeButton">Change Direction</button>
+
     <canvas id="glCanvas" height="1080" width="1920"></canvas>
     <script src="../../Common/webgl-utils.js"></script>
     <script src="index.js"></script>
