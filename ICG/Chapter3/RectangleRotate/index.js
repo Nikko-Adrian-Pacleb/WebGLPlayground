@@ -24,19 +24,22 @@ let clockwise = true; // Variable to determine the direction of rotation
 const DirectionChangeButton = document.getElementById("DirectionChangeButton").onclick = () => {
     clockwise = !clockwise
 }
-const AppMenuSelect = document.getElementById("AppMenuSelect")
-AppMenuSelect.addEventListener("click", () => {
-    switch(AppMenuSelect.selectedIndex) {
-        case 0:
-            clockwise = !clockwise
-            break;
-        case 1:
-            delay /= 2
-            break;
-        case 2:
-            delay *= 2
-            break;
-    }
+// const AppMenuSelect = document.getElementById("AppMenuSelect")
+// AppMenuSelect.addEventListener("click", () => {
+//     switch(AppMenuSelect.selectedIndex) {
+//         case 0:
+//             clockwise = !clockwise
+//             break;
+//         case 1:
+//             delay /= 2
+//             break;
+//         case 2:
+//             delay *= 2
+//             break;
+//     }
+// })
+document.getElementById("Slider").addEventListener("change", (e) => {
+    delay = e.target.value
 })
 
 function main() {
