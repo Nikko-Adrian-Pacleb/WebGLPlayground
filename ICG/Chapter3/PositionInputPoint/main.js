@@ -55,10 +55,18 @@ canvas.addEventListener("click", (event) => {
     const mouseXPos = -1 + (2 * event.clientX / canvas.width)
     const mouseYPos = -1 + (2 * (canvas.height - event.clientY) / canvas.height)
     console.log(mouseXPos, mouseYPos)
-    allPoints.push(mouseXPos, mouseYPos)
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(allPoints), gl.STATIC_DRAW)
-    ++numOfPoints
-    // Draw
-    gl.clear(gl.COLOR_BUFFER_BIT)
-    gl.drawArrays(gl.POINTS, 0, numOfPoints)
+    
+    // ver1
+    // allPoints.push(mouseXPos, mouseYPos)
+    // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(allPoints), gl.STATIC_DRAW)
+    // ++numOfPoints
+    // // Draw
+    // gl.clear(gl.COLOR_BUFFER_BIT)
+    // gl.drawArrays(gl.POINTS, 0, numOfPoints)
+
+    //ver2: does not use an array outside. This version will delete the previous point
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([mouseXPos, mouseYPos]), gl.STATIC_DRAW)
+    gl.drawArrays(gl.POINTS, 0, 1)
+
+
 })
